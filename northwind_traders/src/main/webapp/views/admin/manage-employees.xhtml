@@ -1,0 +1,119 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:param name="title" value="Gestión de Empleados"/>
+
+    <ui:define name="content">
+        <h:form id="employeeForm">
+            <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px;">
+                <p:inputText id="searchQuery"
+                             value="#{employeeMgmtBean.searchQuery}"
+                             placeholder="Buscar Empleado por nombre o usuario"
+                             style="width: 300px;"
+                             disabled="#{empty employeeMgmtBean.employees}">
+                    <p:ajax event="keyup"
+                            listener="#{employeeMgmtBean.find}"
+                            update="employeeTable noResultsMessage"/>
+                </p:inputText>
+
+                <p:commandButton icon="pi pi-refresh"
+                                 actionListener="#{employeeMgmtBean.reloadTable}"
+                                 update="employeeForm:employeeTable employeeForm:searchQuery employeeForm:noResultsMessage"
+                                 styleClass="rounded-button ui-button-secondary"
+                                 disabled="#{empty employeeMgmtBean.employees}">
+                    <p:resetInput target="employeeForm:searchQuery"/>
+                </p:commandButton>
+            </div>
+
+            <p:dataTable id="employeeTable"
+                         value="#{employeeMgmtBean.employees}"
+                         var="emp"
+                         rows="5"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                             {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{currentPage}/{totalPages}"
+                         scrollable="true"
+                         scrollWidth="100%">
+
+                <p:column headerText="ID">
+                    <h:outputText value="#{emp.id}"/>
+                </p:column>
+
+                <p:column headerText="Nombre Completo">
+                    <h:outputText value="#{emp.fullName}"/>
+                </p:column>
+
+                <p:column headerText="DNI">
+                    <h:outputText value="#{emp.dni}"/>
+                </p:column>
+
+                <p:column headerText="Contacto">
+                    <h:outputText value="#{emp.phoneNumber}"/>
+                </p:column>
+
+                <p:column headerText="Nacimiento">
+                    <h:outputText value="#{emp.birthDate}" converter="dateConverter"/>
+                </p:column>
+
+                <p:column headerText="Registrado">
+                    <h:outputText value="#{emp.audit.createdAt}" converter="dateTimeConverter"/>
+                </p:column>
+
+                <p:column headerText="Estado" style="text-align: center; width: 6rem;">
+                    <p:tag value="#{emp.active ? 'Activo' : 'Inactivo'}"
+                           severity="#{emp.active ? 'success' : 'danger'}"/>
+                </p:column>
+
+                <p:column headerText="Editar" style="width: 6rem;">
+                    <p:commandButton icon="pi pi-user-edit"
+                                     styleClass="rounded-button ui-button-warning"
+                                     action="/views/admin/employee-info-edit.xhtml"
+                                     process="@this"
+                                     ajax="false"
+                                     disabled="#{not emp.active}">
+                        <f:param name="employeeId" value="#{emp.id}"/>
+                    </p:commandButton>
+                </p:column>
+
+                <p:column headerText="Acción" style="width: 6rem;">
+                    <p:commandButton icon="#{emp.active ? 'pi pi-user-minus' : 'pi pi-user-plus'}"
+                                     styleClass="rounded-button #{emp.active ? 'ui-button-danger' : 'ui-button-success'}"
+                                     actionListener="#{employeeMgmtBean.prepareToggleActive(emp)}"
+                                     process="@this"
+                                     update="employeeForm:confirmToggleActive"
+                                     oncomplete="PF('confirmToggleDialog').show()"/>
+                </p:column>
+
+            </p:dataTable>
+
+            <p:confirmDialog widgetVar="confirmToggleDialog" id="confirmToggleActive"
+                             message="#{employeeMgmtBean.selectedEmployee.active ?
+                    '¿Desea inhabilitar al empleado ' : '¿Desea habilitar al empleado '}
+                          #{employeeMgmtBean.selectedEmployee.fullName}?"
+                             header="Confirmar acción" showEffect="fade" hideEffect="fade"
+                             responsive="true">
+
+                <p:commandButton value="Sí"
+                                 action="#{employeeMgmtBean.toggleActiveStatus}"
+                                 oncomplete="PF('confirmToggleDialog').hide()"
+                                 update="employeeForm globalGrowl"/>
+
+                <p:commandButton value="No"
+                                 onclick="PF('confirmToggleDialog').hide()"
+                                 type="button"
+                                 styleClass="ui-button-secondary"/>
+            </p:confirmDialog>
+
+            <h:outputText id="noResultsMessage"
+                          value="No se encontraron empleados para la búsqueda."
+                          rendered="#{not empty employeeMgmtBean.searchQuery and empty employeeMgmtBean.employees}"
+                          styleClass="alert alert-warning"/>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

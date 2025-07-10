@@ -1,0 +1,93 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:param name="title" value="Edición"/>
+
+    <ui:define name="content">
+        <h:form id="accountEditForm" prependId="false"
+                styleClass="p-card p-shadow-2 p-p-4" style="max-width: 600px; margin: auto;">
+
+            <div class="p-grid p-fluid">
+                <div class="p-col-12">
+                    <p:outputLabel for="email" value="Correo Electrónico:"/>
+                    <br/>
+                    <p:inputText id="email" value="#{accountProfile.dto.email}"/>
+                </div>
+
+                <div class="p-col-12">
+                    <p:outputLabel for="username" value="Nombre de Usuario:"/>
+                    <br/>
+                    <p:inputText id="username" value="#{accountProfile.dto.username}"/>
+                </div>
+
+                <div class="p-col-12">
+                    <p:outputLabel for="password" value="Nueva Contraseña:"/>
+                    <br/>
+                    <p:password id="password" value="#{accountProfile.dto.password}"
+                                feedback="true" toggleMask="true"/>
+                </div>
+
+                <div class="p-col-12">
+                    <p:outputLabel for="confirmPassword" value="Confirmar Contraseña:"/>
+                    <br/>
+                    <p:password id="confirmPassword" value="#{accountProfile.dto.confirmPassword}"
+                                feedback="true" toggleMask="true"/>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 1.0rem; margin-top: 1rem;">
+                <p:commandButton
+                        icon="pi pi-times"
+                        action="#{accountProfile.cancelEdit}"
+                        update="accountEditForm"
+                        styleClass="rounded-button ui-button-secondary"
+                        title="Cancelar"/>
+
+                <p:commandButton icon="pi pi-save"
+                                 action="#{accountProfile.update}"
+                                 update="accountEditForm globalGrowl"
+                                 process="@form"
+                                 styleClass="rounded-button ui-button-success"
+                                 title="Guardar"/>
+            </div>
+        </h:form>
+
+        <div class="p-d-flex p-jc-end p-ai-center p-mt-4" style="gap: 1rem;">
+            <p:commandButton value="Salir"
+                             icon="pi pi-chevron-left"
+                             action="#{recoveryNavigator.navigateToRecoveryDestination}"
+                             styleClass="ui-button-secondary"/>
+
+            <p:commandButton value="Eliminar Cuenta"
+                             icon="pi pi-trash"
+                             process="@this"
+                             onclick="PF('deleteAccountDialog').show()"
+                             styleClass="ui-button-danger"/>
+        </div>
+
+        <p:confirmDialog widgetVar="deleteAccountDialog" showEffect="fade" hideEffect="fade"
+                         message="¿Deseas eliminar tu cuenta? Esta acción es permanente."
+                         header="Eliminar mi cuenta" icon="pi pi-exclamation-triangle" closable="false">
+
+            <h:form id="deleteAccountForm">
+                <p:commandButton value="Eliminar"
+                                 icon="pi pi-check"
+                                 action="#{accountDeletion.deleteAuthenticatedAccount}"
+                                 process="@this"
+                                 update=":accountEditForm"
+                                 styleClass="ui-button-danger"
+                                 oncomplete="PF('deleteAccountDialog').hide()"/>
+
+                <p:commandButton value="Cancelar"
+                                 icon="pi pi-times"
+                                 onclick="PF('deleteAccountDialog').hide()"
+                                 type="button"
+                                 styleClass="ui-button-secondary"/>
+            </h:form>
+        </p:confirmDialog>
+
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,117 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:param name="title" value="Ver Reportes"/>
+
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12 ui-md-4">
+                <p:card style="height: 300px;" styleClass="shadow-2">
+                    <f:facet name="title">
+                        <h:panelGrid columns="2" columnClasses="ui-g-3,ui-g-9"
+                                     style="width: 100%; align-items: center;">
+                            <h:graphicImage library="img" name="admin/reports/top-customers.png" style="width: 48px;"/>
+                            <h:outputText value="Top Clientes" style="font-weight: bold; font-size: 1.1rem;"/>
+                        </h:panelGrid>
+                    </f:facet>
+                    <h:outputText value="Ver los clientes con más compras realizadas."/>
+                    <br/><br/>
+                    <p:commandButton icon="pi pi-search" value="Ver detalle"
+                                     styleClass="ui-button-raised ui-button-secondary"
+                                     onclick="PF('topCustomersDialog').show()"/>
+                </p:card>
+            </div>
+
+            <div class="ui-g-12 ui-md-4">
+                <p:card style="height: 300px;" styleClass="shadow-2">
+                    <f:facet name="title">
+                        <h:panelGrid columns="2" columnClasses="ui-g-3,ui-g-9"
+                                     style="width: 100%; align-items: center;">
+                            <h:graphicImage library="img" name="admin/reports/top-products.png" style="width: 48px;"/>
+                            <h:outputText value="Top Productos" style="font-weight: bold; font-size: 1.1rem;"/>
+                        </h:panelGrid>
+                    </f:facet>
+                    <h:outputText value="Ver los productos más vendidos."/>
+                    <br/><br/>
+                    <p:commandButton icon="pi pi-search" value="Ver detalle"
+                                     styleClass="ui-button-raised ui-button-secondary"
+                                     onclick="PF('topProductsDialog').show()"/>
+                </p:card>
+            </div>
+
+            <div class="ui-g-12 ui-md-4">
+                <p:card style="height: 300px;" styleClass="shadow-2">
+                    <f:facet name="title">
+                        <h:panelGrid columns="2" columnClasses="ui-g-3,ui-g-9"
+                                     style="width: 100%; align-items: center;">
+                            <h:graphicImage library="img" name="admin/reports/total-amount.png" style="width: 48px;"/>
+                            <h:outputText value="Total Recaudado" style="font-weight: bold; font-size: 1.1rem;"/>
+                        </h:panelGrid>
+                    </f:facet>
+                    <h:outputText value="Calcular el total recaudado en un rango de fechas."/>
+                    <br/><br/>
+                    <p:commandButton icon="pi pi-search" value="Buscar"
+                                     styleClass="ui-button-raised ui-button-secondary"
+                                     onclick="PF('totalSalesDialog').show()"/>
+                </p:card>
+            </div>
+        </div>
+
+        <p:dialog header="Seleccione la cantidad de Clientes" widgetVar="topCustomersDialog" modal="true"
+                  width="500" height="400" style="overflow-y: auto">
+            <h:form>
+                <p:spinner value="#{adminReportBean.topCustomersLimit}" min="1" max="7"/>
+                <p:commandButton action="#{adminReportBean.loadTopCustomers}"
+                                 update="topCustomersList" icon="pi pi-search"
+                                 styleClass="rounded-button" style="margin-left: 0.5em;"/>
+                <p:dataList id="topCustomersList" value="#{adminReportBean.topCustomers}" var="cust"
+                            type="ordered" style="margin-top: 1em;">
+                    <strong>#{cust[0]}</strong> - #{cust[1]} orden(es)
+                </p:dataList>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog header="Seleccione la cantidad de Productos" widgetVar="topProductsDialog" modal="true"
+                  width="500" height="400" style="overflow-y: auto;">
+            <h:form>
+                <p:spinner value="#{adminReportBean.topProductsLimit}" min="1" max="7"/>
+
+                <p:commandButton action="#{adminReportBean.loadTopSellingProducts}"
+                                 update="topProductsList" icon="pi pi-search"
+                                 styleClass="rounded-button" style="margin-left: 0.5em;"/>
+                <p:dataList id="topProductsList" value="#{adminReportBean.topSellingProducts}" var="prod"
+                            type="ordered" style="margin-top: 1em;">
+                    <strong>#{prod[0]}</strong> - #{prod[1]} unidad(es)
+                </p:dataList>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog header="Seleccione el rango de fechas" widgetVar="totalSalesDialog" modal="true"
+                  width="500" height="200" style="overflow-y: auto;">
+            <h:form>
+                <h:panelGrid columns="2" style="width:100%; gap: 1rem;">
+                    <h:outputLabel for="start" value="Desde:"/>
+                    <p:datePicker id="start" value="#{adminReportBean.startDate}" showIcon="true" style="width:100%;"/>
+
+                    <h:outputLabel for="end" value="Hasta:"/>
+                    <p:datePicker id="end" value="#{adminReportBean.endDate}" showIcon="true" style="width:100%;"/>
+                </h:panelGrid>
+
+                <p:commandButton action="#{adminReportBean.searchTotalSalesInRange}"
+                                 update="totalSalesOutput globalGrowl"
+                                 icon="pi pi-search" styleClass="rounded-button"
+                                 style="margin-top: 1.5rem;"/>
+                <h:panelGroup id="totalSalesOutput" layout="block" style="margin-top:1.5em;">
+                    <h:outputText rendered="#{not empty adminReportBean.totalSales}"
+                                  value="Monto recaudado: $#{adminReportBean.totalSales}"
+                                  style="font-weight: bold; font-size: 1.2rem;"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:define>
+</ui:composition>

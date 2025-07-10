@@ -1,0 +1,127 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:param name="title" value="Gestión de Pedidos"/>
+
+    <ui:define name="content">
+        <h:form id="pendingOrdersForm">
+            <h:panelGroup rendered="#{orderReviewBean.isPendingOrdersEmpty()}" style="text-align: center;">
+                <h:outputText value="No hay pedidos pendientes por el momento."
+                              style="font-weight: bold; font-size: 1.1em;"/>
+            </h:panelGroup>
+
+            <p:dataTable id="pendingOrdersTable"
+                         value="#{orderReviewBean.pendingOrders}"
+                         var="order"
+                         paginator="true" rows="10" reflow="true"
+                         emptyMessage="No hay pedidos pendientes."
+                         rendered="#{not orderReviewBean.isPendingOrdersEmpty()}">
+
+                <p:column headerText="N°. Pedido">
+                    <h:outputText value="#{order.id}"/>
+                </p:column>
+
+                <p:column headerText="Cliente">
+                    <h:outputText value="#{order.customer.fullName}"/>
+                </p:column>
+
+                <p:column headerText="Fecha y Hora">
+                    <h:outputText value="#{order.orderDate}" converter="dateTimeConverter"/>
+                </p:column>
+
+                <p:column headerText="Detalles" style="text-align: center;">
+                    <p:commandButton icon="pi pi-search"
+                                     actionListener="#{orderReviewBean.loadOrderDetails(order.id)}"
+                                     update="detailsDialog"
+                                     oncomplete="PF('detailsDialog').show()"/>
+                </p:column>
+
+                <p:column headerText="Aprobar" style="text-align: center;">
+                    <p:commandButton icon="pi pi-check"
+                                     actionListener="#{orderReviewBean.loadOrderDetails(order.id)}"
+                                     oncomplete="PF('confirmAcceptDialog').show()"
+                                     update="confirmAcceptDialog"
+                                     style="background-color: green; color: white;"
+                                     title="Aceptar pedido"/>
+                </p:column>
+
+                <p:column headerText="Rechazar" style="text-align: center;">
+                    <p:commandButton icon="pi pi-times"
+                                     actionListener="#{orderReviewBean.loadOrderDetails(order.id)}"
+                                     oncomplete="PF('confirmRejectDialog').show()"
+                                     update="confirmRejectDialog"
+                                     style="background-color: red; color: white;"
+                                     title="Rechazar pedido"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+
+        <p:dialog id="detailsDialog"
+                  widgetVar="detailsDialog"
+                  header="Ver Detalles"
+                  modal="true" responsive="true" width="50%">
+
+            <h:panelGroup layout="block" style="max-height: 70vh; overflow-y: auto; padding-right: 10px;">
+                <h:panelGroup id="orderDetailsPanel">
+                    <p:panelGrid columns="2" rendered="#{not empty orderReviewBean.selectedOrder}">
+                        <h:outputText value="Total:" style="font-weight: bold;"/>
+                        <h:outputText value="$#{orderReviewBean.selectedOrder.totalAmount}" style="font-weight: bold;"/>
+                    </p:panelGrid>
+
+                    <p:dataTable value="#{orderReviewBean.selectedOrder.orderDetails}" var="detail"
+                                 style="margin-top: 10px;"
+                                 rendered="#{not empty orderReviewBean.selectedOrder.orderDetails}">
+                        <p:column headerText="Producto">
+                            <h:outputText value="#{detail.product.name}"/>
+                        </p:column>
+                        <p:column headerText="Cantidad">
+                            <h:outputText value="#{detail.productQuantity}"/>
+                        </p:column>
+                        <p:column headerText="Precio Unitario">
+                            <h:outputText value="$#{detail.productPrice}"/>
+                        </p:column>
+                        <p:column headerText="Subtotal">
+                            <h:outputText value="$#{detail.productQuantity * detail.productPrice}"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+            </h:panelGroup>
+
+            <p:commandButton value="Cerrar" onclick="PF('detailsDialog').hide()" style="margin-top: 10px;"/>
+        </p:dialog>
+
+        <p:confirmDialog id="confirmAcceptDialog" widgetVar="confirmAcceptDialog"
+                         header="Aprobar Pedido"
+                         message="¿Deseas aprobar el pedido N° #{orderReviewBean.selectedOrder.id}?"
+                         appendTo="@(body)">
+            <p:commandButton value="Aceptar"
+                             action="#{orderReviewBean.acceptOrder}"
+                             update="pendingOrdersForm globalGrowl"
+                             oncomplete="PF('confirmAcceptDialog').hide()"
+                             styleClass="ui-button-success"/>
+            <p:commandButton value="Cancelar"
+                             onclick="PF('confirmAcceptDialog').hide()"
+                             type="button"
+                             styleClass="ui-button-secondary"/>
+        </p:confirmDialog>
+
+        <p:confirmDialog id="confirmRejectDialog" widgetVar="confirmRejectDialog"
+                         header="Rechazar Pedido"
+                         message="¿Deseas rechazar el pedido N° #{orderReviewBean.selectedOrder.id}?"
+                         appendTo="@(body)">
+            <p:commandButton value="Aceptar"
+                             action="#{orderReviewBean.rejectOrder}"
+                             update="pendingOrdersForm globalGrowl"
+                             oncomplete="PF('confirmRejectDialog').hide()"
+                             styleClass="ui-button-success"/>
+            <p:commandButton value="Cancelar"
+                             onclick="PF('confirmRejectDialog').hide()"
+                             type="button"
+                             styleClass="ui-button-secondary"/>
+        </p:confirmDialog>
+
+    </ui:define>
+</ui:composition>

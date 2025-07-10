@@ -1,0 +1,92 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:param name="title" value="Ver Reportes"/>
+
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12 ui-md-4">
+                <p:card style="height: 300px;" styleClass="shadow-2">
+                    <f:facet name="title">
+                        <h:panelGrid columns="2" columnClasses="ui-g-3,ui-g-9"
+                                     style="width: 100%; align-items: center;">
+                            <h:graphicImage library="img" name="emp/low-stock.png" style="width: 54px;"/>
+                            <h:outputText value="Stock Bajo" style="font-weight: bold; font-size: 1.1rem;"/>
+                        </h:panelGrid>
+                    </f:facet>
+                    <h:outputText value="Mostrar los productos con stock bajo."/>
+                    <br/><br/>
+                    <p:commandButton icon="pi pi-search" value="Ver detalle"
+                                     styleClass="ui-button-warning"
+                                     onclick="PF('lowStockDialog').show()"/>
+                </p:card>
+            </div>
+
+            <div class="ui-g-12 ui-md-4">
+                <p:card style="height: 300px;" styleClass="shadow-2">
+                    <f:facet name="title">
+                        <h:panelGrid columns="2" columnClasses="ui-g-3,ui-g-9"
+                                     style="width: 100%; align-items: center;">
+                            <h:graphicImage library="img" name="emp/no-stock.png" style="width: 54px;"/>
+                            <h:outputText value="Sin Stock / Inactivos" style="font-weight: bold; font-size: 1.1rem;"/>
+                        </h:panelGrid>
+                    </f:facet>
+                    <h:outputText value="Mostrar los productos sin stock o inactivos."/>
+                    <br/><br/>
+                    <p:commandButton icon="pi pi-search" value="Ver detalle"
+                                     styleClass="ui-button-danger"
+                                     onclick="PF('outOfStockDialog').show()"/>
+                </p:card>
+            </div>
+
+            <div class="ui-g-12 ui-md-4">
+                <p:card style="height: 300px;" styleClass="shadow-2">
+                    <f:facet name="title">
+                        <h:panelGrid columns="2" columnClasses="ui-g-3,ui-g-9"
+                                     style="width: 100%; align-items: center;">
+                            <h:graphicImage library="img" name="emp/chart.png" style="width: 42px;"/>
+                            <h:outputText value="Órdenes Procesadas" style="font-weight: bold; font-size: 1.1rem;"/>
+                        </h:panelGrid>
+                    </f:facet>
+                    <h:outputText value="Mostrar el estado general de las Órdenes procesadas en el sistema."/>
+                    <br/><br/>
+                    <p:commandButton icon="pi pi-search" value="Ver gráfico"
+                                     styleClass="ui-button-info"
+                                     onclick="PF('processedOrdersDialog').show()"/>
+                </p:card>
+            </div>
+        </div>
+
+        <p:dialog header="Productos con stock bajo" widgetVar="lowStockDialog" modal="true" width="400">
+            <p:scrollPanel style="max-height:300px;">
+                <ui:repeat value="#{stockReportBean.lowStockProducts}" var="product">
+                    <p:outputPanel styleClass="mb-2">
+                        <strong>Nombre:</strong> #{product[0]} <br/>
+                        <strong>Categoría:</strong> #{product[1]} <br/>
+                        <strong>Stock actual:</strong> #{product[2]} <br/><br/>
+                    </p:outputPanel>
+                </ui:repeat>
+            </p:scrollPanel>
+        </p:dialog>
+
+        <p:dialog header="Productos sin stock/inactivos" widgetVar="outOfStockDialog" modal="true" width="400">
+            <p:scrollPanel style="max-height:300px;">
+                <ui:repeat value="#{stockReportBean.outOfStockProducts}" var="product">
+                    <p:outputPanel styleClass="mb-2">
+                        <strong>Nombre:</strong> #{product[0]} <br/>
+                        <strong>Categoría:</strong> #{product[1]} <br/><br/>
+                    </p:outputPanel>
+                </ui:repeat>
+            </p:scrollPanel>
+        </p:dialog>
+
+        <p:dialog header="Historial de Órdenes procesadas" widgetVar="processedOrdersDialog" modal="true" width="500">
+            <p:chart type="pie" model="#{processedOrdersBean.pieModel}" style="width:100%; height:300px;"/>
+        </p:dialog>
+
+    </ui:define>
+</ui:composition>

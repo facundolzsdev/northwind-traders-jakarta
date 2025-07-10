@@ -1,0 +1,99 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:param name="title" value="Productos"/>
+
+    <ui:define name="content">
+        <div style="display: flex; justify-content: flex-end; align-items: center; gap: 30px; padding: 5px 10px;">
+            <h:outputLink value="cart.jsf" style="cursor: pointer; position: relative; display: inline-block;">
+                <h:graphicImage value="/resources/img/customer/shppcart.png" alt="Carrito de compras"
+                                title="Mi Carrito" style="width: 38px; height: 38px; object-fit: contain;"/>
+                <h:outputText id="cartItemCount" value="#{cartBean.cartItemCount}"
+                              style="position: absolute; top: -10px; right: -12px;
+                          font-size: 0.9rem; font-weight: bold; color: white;
+                          background-color: #2C8AFF; border-radius: 50%;
+                          width: 22px; height: 22px; display: flex; justify-content: center;
+                          align-items: center;"/>
+            </h:outputLink>
+            <h:outputLink value="orders.jsf" style="cursor: pointer;">
+                <h:graphicImage value="/resources/img/customer/delivery_time.png" alt="Historial de pedidos"
+                                title="Mis Pedidos" style="width: 44px; height: 44px; object-fit: contain;"/>
+            </h:outputLink>
+        </div>
+
+        <h:form id="productForm">
+            <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px;">
+                <p:inputText id="searchQuery"
+                             value="#{customerProductBean.searchQuery}"
+                             placeholder="Buscar Producto por nombre"
+                             style="width: 300px;">
+                    <p:ajax listener="#{customerProductBean.find}" event="keyup"
+                            update="productTable noResultsMessage"/>
+                </p:inputText>
+
+                <p:commandButton styleClass="rounded-button ui-button-secondary"
+                                 icon="pi pi-refresh"
+                                 update="productTable searchQuery noResultsMessage"
+                                 actionListener="#{customerProductBean.reloadTable}">
+                    <p:resetInput target="searchQuery"/>
+                </p:commandButton>
+            </div>
+
+            <p:dataTable id="productTable"
+                         value="#{customerProductBean.products}"
+                         var="product"
+                         rows="5"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                 {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{currentPage}/{totalPages}"
+                         scrollable="true"
+                         scrollWidth="100%">
+
+                <p:column headerText="Nombre">
+                    <h:outputText value="#{product.name}"/>
+                </p:column>
+
+                <p:column headerText="Categoría">
+                    <h:outputText value="#{product.category.name}"/>
+                </p:column>
+
+                <p:column headerText="Unidades">
+                    <h:outputText value="$#{product.unit}"/>
+                </p:column>
+
+                <p:column headerText="Precio">
+                    <h:outputText value="$#{product.price}"/>
+                </p:column>
+
+                <p:column headerText="Stock">
+                    <h:outputText id="stockText" value="#{product.stock}"/>
+                </p:column>
+
+                <p:column headerText="Cantidad">
+                    <p:spinner id="quantitySpinner" min="1" value="#{cartBean.selectedQuantities[product.id]}"/>
+                </p:column>
+
+                <p:column headerText="Opción">
+                    <p:commandButton
+                            id="addToCartButton"
+                            value="#{cartBean.isProductAlreadyInCart(product.id) ? 'Ya agregado' : 'Al carrito'}"
+                            styleClass="ui-button-raised" icon="pi pi-plus"
+                            action="#{cartBean.addProductToCart(product, cartBean.selectedQuantities[product.id])}"
+                            process="@this quantitySpinner"
+                            update="addToCartButton cartItemCount stockText :globalGrowl"
+                            disabled="#{cartBean.isProductAlreadyInCart(product.id)}"/>
+                </p:column>
+            </p:dataTable>
+
+            <h:outputText id="noResultsMessage"
+                          value="No se encontraron productos para la búsqueda."
+                          rendered="#{empty customerProductBean.products}"
+                          styleClass="alert alert-warning"/>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

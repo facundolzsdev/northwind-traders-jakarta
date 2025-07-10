@@ -1,0 +1,71 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:param name="title" value="Editar Empleado"/>
+
+    <ui:define name="content">
+        <h:form id="employeeInfoForm" prependId="false"
+                styleClass="p-card p-shadow-2 p-p-4" style="max-width: 600px; margin: auto;">
+
+            <div class="p-grid p-fluid">
+                <div class="p-col-6">
+                    <p:outputLabel for="fullName" value="Nombre completo:"/>
+                    <br/>
+                    <p:inputText id="fullName" value="#{employeeProfile.dto.fullName}"/>
+                </div>
+                <div class="p-col-6">
+                    <p:outputLabel for="dni" value="DNI:"/>
+                    <br/>
+                    <p:inputText id="dni" value="#{employeeProfile.dto.dni}"/>
+                </div>
+                <div class="p-col-6">
+                    <p:outputLabel for="phoneNumber" value="Contacto:"/>
+                    <br/>
+                    <p:inputText id="phoneNumber" value="#{employeeProfile.dto.phoneNumber}"/>
+                </div>
+
+                <div class="p-col-6">
+                    <p:outputLabel for="birthDate" value="Fecha de Nacimiento:"/>
+                    <br/>
+                    <p:datePicker id="birthDate" value="#{employeeProfile.dto.birthDate}"
+                                  showIcon="true" pattern="dd/MM/yyyy" yearNavigator="true"/>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 1.0rem; margin-top: 1rem;">
+                <p:commandButton
+                        icon="pi pi-times"
+                        action="#{employeeProfile.cancelEdit}"
+                        update="employeeInfoForm"
+                        styleClass="rounded-button ui-button-secondary"
+                        title="Cancelar"/>
+
+                <p:commandButton icon="pi pi-save"
+                                 action="#{employeeProfile.update}"
+                                 update="employeeInfoForm globalGrowl"
+                                 process="@form"
+                                 styleClass="rounded-button ui-button-success"
+                                 title="Guardar"/>
+            </div>
+        </h:form>
+
+        <div class="p-d-flex p-jc-end p-ai-center p-mt-4" style="gap: 1.5rem;">
+            <p:button value="Regresar"
+                      icon="pi pi-arrow-left"
+                      styleClass="ui-button-secondary"
+                      outcome="/views/admin/manage-employees"/>
+
+            <p:button value="Editar Usuario"
+                      outcome="/views/common/user-account-edit"
+                      icon="pi pi-user-edit"
+                      styleClass="ui-button-info">
+                <f:param name="userId" value="#{employeeProfile.originalEntity.user.id}" />
+            </p:button>
+        </div>
+
+    </ui:define>
+</ui:composition>

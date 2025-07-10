@@ -1,0 +1,75 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:param name="title" value="Edición"/>
+
+    <ui:define name="content">
+        <h:form id="personalInfoForm" prependId="false"
+                styleClass="p-card p-shadow-2 p-p-4" style="max-width: 600px; margin: auto;">
+            <div class="p-grid p-fluid">
+                <div class="p-col-6">
+                    <p:outputLabel for="fullName" value="Nombre completo:"/>
+                    <br/>
+                    <p:inputText id="fullName" value="#{customerProfile.dto.fullName}"/>
+                </div>
+                <div class="p-col-6">
+                    <p:outputLabel for="country" value="País:"/>
+                    <br/>
+                    <p:inputText id="country" value="#{customerProfile.dto.country}"/>
+                </div>
+                <div class="p-col-6">
+                    <p:outputLabel for="city" value="Ciudad:"/>
+                    <br/>
+                    <p:inputText id="city" value="#{customerProfile.dto.city}"/>
+                </div>
+                <div class="p-col-6">
+                    <p:outputLabel for="postalCode" value="Código Postal:"/>
+                    <br/>
+                    <p:inputText id="postalCode" value="#{customerProfile.dto.postalCode}"/>
+                </div>
+                <div class="p-col-6">
+                    <p:outputLabel for="address" value="Dirección:"/>
+                    <br/>
+                    <p:inputText id="address" value="#{customerProfile.dto.address}"/>
+                </div>
+                <div class="p-col-6">
+                    <p:outputLabel for="phoneNumber" value="Teléfono:"/>
+                    <br/>
+                    <p:inputMask id="phoneNumber" value="#{customerProfile.dto.phoneNumber}"/>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 1.0rem; margin-top: 1rem;">
+                <p:commandButton
+                        icon="pi pi-times"
+                        action="#{customerProfile.cancelEdit}"
+                        update="personalInfoForm"
+                        styleClass="rounded-button ui-button-secondary"
+                        title="Cancelar"/>
+
+                <p:commandButton icon="pi pi-save"
+                                 action="#{customerProfile.update}"
+                                 update="personalInfoForm globalGrowl"
+                                 process="@form"
+                                 styleClass="rounded-button ui-button-success"
+                                 title="Guardar"/>
+            </div>
+        </h:form>
+
+        <div class="p-d-flex p-jc-end p-ai-center p-mt-4" style="gap: 1.5rem;">
+            <p:button value="Regresar"
+                      icon="pi pi-arrow-left"
+                      styleClass="ui-button-secondary"
+                      outcome="/views/customer/products"/>
+
+            <p:button value="Editar Cuenta"
+                      outcome="/views/common/user-account-edit"
+                      icon="pi pi-user-edit"
+                      styleClass="ui-button-info"/>
+        </div>
+
+    </ui:define>
+</ui:composition>

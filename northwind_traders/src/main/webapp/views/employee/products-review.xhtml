@@ -1,0 +1,108 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:param name="title" value="Gestión de Productos"/>
+
+    <ui:define name="content">
+        <div style="display: flex; justify-content: flex-end; gap: 10px; padding: 5px 10px;">
+            <p:commandButton value="Nuevo Producto"
+                             icon="pi pi-plus"
+                             actionListener="#{employeeProductBean.prepareCreate}"
+                             update=":productForm :productDialog"
+                             oncomplete="PF('productDialog').show()"
+                             styleClass="ui-button-success"/>
+        </div>
+
+        <h:form id="productForm">
+            <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px;">
+                <p:inputText id="searchQuery"
+                             value="#{employeeProductBean.searchQuery}"
+                             placeholder="Buscar Producto por nombre"
+                             style="width: 300px;">
+                    <p:ajax event="keyup"
+                            listener="#{employeeProductBean.find}"
+                            update="productTable noResultsMessage"/>
+                </p:inputText>
+
+                <p:commandButton icon="pi pi-refresh"
+                                 actionListener="#{employeeProductBean.reloadTable}"
+                                 update="productForm:productTable productForm:searchQuery productForm:noResultsMessage"
+                                 styleClass="rounded-button ui-button-secondary">
+                    <p:resetInput target="productForm:searchQuery"/>
+                </p:commandButton>
+            </div>
+
+            <p:dataTable id="productTable"
+                         value="#{employeeProductBean.products}"
+                         var="product"
+                         rows="5"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                             {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{currentPage}/{totalPages}"
+                         scrollable="true"
+                         scrollWidth="100%">
+
+                <p:column headerText="ID">
+                    <h:outputText value="#{product.id}"/>
+                </p:column>
+
+                <p:column headerText="Nombre">
+                    <h:outputText value="#{product.name}"/>
+                </p:column>
+
+                <p:column headerText="Categoría">
+                    <h:outputText value="#{product.category.name}"/>
+                </p:column>
+
+                <p:column headerText="Precio">
+                    <h:outputText value="$#{product.price}"/>
+                </p:column>
+
+                <p:column headerText="Unidades">
+                    <h:outputText value="#{product.unit}"/>
+                </p:column>
+
+                <p:column headerText="Stock">
+                    <h:outputText value="#{product.stock}"/>
+                </p:column>
+
+                <p:column headerText="Habilitado">
+                    <h:outputText value="#{product.active ? 'Sí' : 'No'}"/>
+                </p:column>
+
+                <p:column headerText="Registrado">
+                    <h:outputText value="#{product.audit.createdAt}" converter="dateTimeConverter"/>
+                </p:column>
+
+                <p:column headerText="Editar">
+                    <p:commandButton icon="pi pi-pencil"
+                                     styleClass="ui-button-info"
+                                     actionListener="#{employeeProductBean.prepareEdit(product)}"
+                                     update=":productForm :productDialog"
+                                     oncomplete="PF('productDialog').show()"/>
+                </p:column>
+            </p:dataTable>
+
+            <h:outputText id="noResultsMessage"
+                          value="No se encontraron productos para la búsqueda."
+                          rendered="#{empty employeeProductBean.products}"
+                          styleClass="alert alert-warning"/>
+        </h:form>
+
+        <p:dialog widgetVar="productDialog"
+                  modal="true" width="600" height="auto" dynamic="true" id="productDialog" appendTo="@(body)"
+                  resizable="false">
+            <f:facet name="header">
+                <h:outputText value="#{employeeProductBean.dialogTitle}"/>
+            </f:facet>
+
+            <ui:include src="/views/employee/product-form-modal.xhtml"/>
+        </p:dialog>
+
+    </ui:define>
+</ui:composition>

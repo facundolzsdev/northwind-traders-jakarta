@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+    <title>Northwind Traders | Ingresar</title>
+    <h:outputStylesheet library="webjars" name="primeflex/2.0.0/primeflex.min.css"/>
+</h:head>
+
+<h:body class="p-d-flex p-jc-center p-ai-center" style="height: 100vh; margin: 0;">
+    <f:view transient="true">
+        <p:growl id="messages" widgetVar="growlWidget"
+                 showDetail="true" sticky="false" life="5000"
+                 autoUpdate="true" globalOnly="false"/>
+
+        <f:metadata>
+            <f:event type="preRenderView" listener="#{loginBean.checkSessionExpired}"/>
+        </f:metadata>
+
+        <h:form id="loginForm" class="p-card p-shadow-2 p-p-4" style="width: 350px;">
+            <div class="p-d-flex p-jc-center p-ai-center p-mb-4">
+                <h:graphicImage library="img" name="login_logo.png" width="100" height="96"/>
+            </div>
+
+            <div class="p-d-flex p-flex-column p-ai-center">
+                <p:outputLabel for="identifier" value="Usuario o Email:" class="p-d-block p-mb-2"/>
+                <p:inputText id="identifier" value="#{loginBean.identifier}" class="p-inputtext p-d-block p-mb-3"
+                             autocomplete="off"/>
+
+                <p:outputLabel for="password" value="Contraseña:" class="p-d-block p-mb-2"/>
+                <p:password id="password" value="#{loginBean.password}" class="p-inputtext p-d-block p-mb-3"
+                            autocomplete="off"/>
+
+                <p:commandButton value="Ingresar" icon="pi pi-sign-in" action="#{loginBean.login()}"
+                                 styleClass="p-button-success p-d-block p-mt-4" update="messages"/>
+
+                <h:link outcome="customer-signup"
+                        style="margin-top: 20px; text-decoration: none; color: #007ad9; font-size: 1em;
+                    font-family: Arial, sans-serif;">
+                    Registrarme
+                </h:link>
+            </div>
+        </h:form>
+    </f:view>
+</h:body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>¡Ups! Algo salió mal</title>
+    <h:outputStylesheet library="webjars" name="primeflex/2.0.0/primeflex.min.css"/>
+</h:head>
+
+<h:body class="p-d-flex p-jc-center p-ai-center" style="height: 100vh; margin: 0;">
+    <h:form id="errorForm">
+        <div class="p-card p-shadow-4 p-p-4 p-d-flex p-flex-column p-ai-center"
+             style="width: 90vw; max-width: 400px; text-align: center;">
+
+            <p:graphicImage value="/resources/img/common/please_standby.png"
+                            alt="technical difficulties"
+                            style="width: 100%; max-width: 350px; height: auto; margin-bottom: 0;"/>
+
+            <p:outputLabel value="¡Ups! Algo salió mal"
+                           style="font-size: 1.5rem; font-weight: bold; margin-top: 0;"
+                           styleClass="p-mb-2"/>
+
+            <p:outputLabel escape="false"
+                           style="font-size: 1rem;"
+                           styleClass="p-mb-2">
+                Se ha producido un error inesperado.<br/>Estamos trabajando para solucionarlo.
+            </p:outputLabel>
+
+            <p:outputLabel value="Por favor, intenta de nuevo más tarde."
+                           style="font-size: 1rem;"
+                           styleClass="p-mb-4"/>
+
+            <p:commandButton value="Regresar"
+                             icon="pi pi-arrow-left"
+                             action="#{recoveryNavigator.navigateToRecoveryDestination}"
+                             styleClass="rounded-button ui-button-secondary p-mb-2"
+                             style="width: 50%;" />
+
+            <p:commandButton value="Salir"
+                             icon="pi pi-times"
+                             type="button"
+                             onclick="PF('logoutDialog').show()"
+                             styleClass="rounded-button ui-button-secondary"
+                             style="width: 50%;" />
+        </div>
+
+        <p:dialog id="logoutDialog"
+                  widgetVar="logoutDialog"
+                  header="Cerrar Sesión"
+                  modal="true"
+                  width="30%">
+
+            <h:outputText value="¿Deseas cerrar completamente tu sesión?"
+                          style="font-weight: bold;" />
+            <br/><br/>
+
+            <h:panelGroup>
+                <p:commandButton value="Confirmar"
+                                 action="#{logoutBean.logout}"
+                                 oncomplete="PF('logoutDialog').hide()"
+                                 update="globalGrowl"
+                                 styleClass="ui-button-danger" />
+
+                <p:commandButton value="Cancelar"
+                                 onclick="PF('logoutDialog').hide()"
+                                 styleClass="ui-button-secondary"
+                                 style="margin-left: 10px;" />
+            </h:panelGroup>
+        </p:dialog>
+
+    </h:form>
+    <p:growl id="globalGrowl" showDetail="true" life="4000" />
+</h:body>
+</html>

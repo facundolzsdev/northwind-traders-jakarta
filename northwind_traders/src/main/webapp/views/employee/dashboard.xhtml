@@ -1,0 +1,77 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:param name="title" value="Dashboard"/>
+
+    <ui:define name="content">
+        <div class="ui-g ui-fluid" style="margin-top: 2rem;">
+            <div class="ui-g-12 ui-g-nopad">
+                <div class="ui-g-6 ui-g-offset-3">
+                    <p:card styleClass="shadow-2">
+                        <f:facet name="header">
+                            <h:outputText value="Gestionar Pedidos" style="font-weight: bold; font-size: 1.2rem;"/>
+                        </f:facet>
+
+                        <h:panelGrid columns="2" columnClasses="ui-g-6,ui-g-6" style="width:100%;">
+                            <h:graphicImage library="img" name="emp/orders.png" style="width: 64px;"/>
+                            <h:outputText value="Revisar y gestionar las compras realizadas por los clientes."
+                                          style="font-size: 1.1rem;"/>
+                        </h:panelGrid>
+                        <br/>
+                        <div style="text-align: center;">
+                            <p:button value="Ver sección" outcome="orders-review.xhtml" icon="pi pi-arrow-right"
+                                      styleClass="ui-button-raised" style="width: auto;"/>
+                        </div>
+                    </p:card>
+                </div>
+            </div>
+
+            <div class="ui-g-12 ui-g-nopad">
+                <div class="ui-g-6 ui-g-offset-3">
+                    <p:card styleClass="shadow-2">
+                        <f:facet name="header">
+                            <h:outputText value="Gestionar Productos" style="font-weight: bold; font-size: 1.2rem;"/>
+                        </f:facet>
+
+                        <h:panelGrid columns="2" columnClasses="ui-g-6,ui-g-6" style="width:100%;">
+                            <h:graphicImage library="img" name="emp/stock.png" style="width: 64px;"/>
+                            <h:outputText value="Modificar stock, precios y detalles de los productos."
+                                          style="font-size: 1.1rem;"/>
+                        </h:panelGrid>
+                        <br/>
+                        <div style="text-align: center;">
+                            <p:button value="Ver sección" outcome="products-review.xhtml" icon="pi pi-arrow-right"
+                                      styleClass="ui-button-raised" style="width: auto;"/>
+                        </div>
+                    </p:card>
+                </div>
+            </div>
+
+            <div class="ui-g-12 ui-g-nopad">
+                <div class="ui-g-6 ui-g-offset-3">
+                    <p:card styleClass="shadow-2">
+                        <f:facet name="header">
+                            <h:outputText value="Ver Reportes" style="font-weight: bold; font-size: 1.2rem;"/>
+                        </f:facet>
+
+                        <h:panelGrid columns="2" columnClasses="ui-g-6,ui-g-6" style="width:100%;">
+                            <h:graphicImage library="img" name="emp/reports.png" style="width: 64px;"/>
+                            <h:outputText value="Acceder a los reportes de stock y órdenes procesadas."
+                                          style="font-size: 1.1rem;"/>
+                        </h:panelGrid>
+                        <br/>
+                        <div style="text-align: center;">
+                            <p:button value="Ver sección" outcome="reports.xhtml" icon="pi pi-arrow-right"
+                                      styleClass="ui-button-raised" style="width: auto;"/>
+                        </div>
+                    </p:card>
+                </div>
+            </div>
+        </div>
+
+    </ui:define>
+</ui:composition>

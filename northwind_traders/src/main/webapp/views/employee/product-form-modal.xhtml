@@ -1,0 +1,47 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:h="http://xmlns.jcp.org/jsf/html"
+              xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+              xmlns:f="http://xmlns.jcp.org/jsf/core"
+              xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="productFormModal">
+        <p:panelGrid columns="2" columnClasses="label,value" styleClass="ui-fluid" style="width: 100%">
+
+            <p:outputLabel value="Nombre:" for="name" style="width: 120px;"/>
+            <p:inputText id="name" value="#{employeeProductBean.selectedProduct.name}" style="width: 100%"/>
+
+            <p:outputLabel value="Categoría:" for="category"/>
+            <p:selectOneMenu id="category"
+                             value="#{employeeProductBean.selectedProduct.category}"
+                             style="width: 100%" converter="#{categoryConverter}">
+                <f:selectItems value="#{employeeProductBean.categories}"
+                               var="category" itemValue="#{category}" itemLabel="#{category.name}"/>
+            </p:selectOneMenu>
+
+            <p:outputLabel value="Precio:" for="price"/>
+            <p:inputNumber id="price" value="#{employeeProductBean.selectedProduct.price}" style="width: 100%"
+                           symbol="$"/>
+
+            <p:outputLabel value="Unidades:" for="unit"/>
+            <p:inputText id="unit" value="#{employeeProductBean.selectedProduct.unit}" style="width: 100%"/>
+
+            <p:outputLabel value="Stock:" for="stock"/>
+            <p:inputText id="stock" value="#{employeeProductBean.selectedProduct.stock}" style="width: 100%"/>
+
+            <p:outputLabel value="Habilitado:" for="active"/>
+            <p:selectBooleanCheckbox id="active" value="#{employeeProductBean.selectedProduct.active}"
+                                     style="width: 100%"/>
+        </p:panelGrid>
+
+        <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
+            <p:commandButton value="Guardar"
+                             style="margin-right: 10px;"
+                             actionListener="#{employeeProductBean.saveProduct}"
+                             update=":productForm :globalGrowl"
+                             oncomplete="PF('productDialog').hide()"
+                             icon="pi pi-check"
+                             styleClass="ui-button-success"/>
+        </div>
+    </h:form>
+
+</ui:component>

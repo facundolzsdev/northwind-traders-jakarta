@@ -1,0 +1,55 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:param name="title" value="Registro Admin"/>
+
+    <ui:define name="content">
+        <div class="p-d-flex p-jc-center p-ai-center" style="height: 60vh;">
+            <h:form id="adminSignUpForm" class="p-card p-shadow-2 p-p-4" style="width: 600px;">
+
+                <p:panel id="adminPanel">
+                    <h2>Credenciales</h2>
+                    <div class="p-grid p-fluid">
+                        <div class="p-col-6">
+                            <p:outputLabel for="email" value="Email:"/>
+                            <br/>
+                            <p:inputText id="email" value="#{adminSignUp.email}"/>
+                        </div>
+                        <div class="p-col-6">
+                            <p:outputLabel for="username" value="Nombre de Usuario:"/>
+                            <br/>
+                            <p:inputText id="username" value="#{adminSignUp.username}"/>
+                        </div>
+                        <div class="p-col-6">
+                            <p:outputLabel for="password" value="Contraseña:"/>
+                            <br/>
+                            <p:password id="password" value="#{adminSignUp.password}"/>
+                        </div>
+                        <div class="p-col-6">
+                            <p:outputLabel for="confirmPassword" value="Confirmar Contraseña:"/>
+                            <br/>
+                            <p:password id="confirmPassword" value="#{adminSignUp.confirmPassword}"/>
+                        </div>
+                    </div>
+
+                    <div class="p-d-flex p-jc-between p-mt-3">
+                        <p:commandButton value="Regresar" icon="pi pi-arrow-left"
+                                         action="dashboard?faces-redirect=true"
+                                         styleClass="p-button-secondary"/>
+
+                        <p:commandButton value="Registrar"
+                                         actionListener="#{adminSignUp.register}"
+                                         update="globalGrowl"
+                                         process="@form"
+                                         icon="pi pi-user-plus"
+                                      />
+                    </div>
+                </p:panel>
+            </h:form>
+        </div>
+
+    </ui:define>
+</ui:composition>

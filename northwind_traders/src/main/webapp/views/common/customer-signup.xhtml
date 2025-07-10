@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Northwind Traders | Registro Cliente</title>
+    <h:outputStylesheet library="webjars" name="primeflex/2.0.0/primeflex.min.css"/>
+</h:head>
+
+<h:body class="p-d-flex p-jc-center p-ai-center" style="height: 100vh; margin: 0;">
+    <p:growl id="messages" showDetail="true" sticky="false" life="5000"/>
+
+    <h:form id="signUpForm" class="p-card p-shadow-2 p-p-4" style="width: 600px;">
+        <p:panel id="step1Panel" rendered="#{customerSignUp.step1}">
+            <h2>Datos Personales</h2>
+            <div class="p-grid p-fluid">
+                <div class="p-col-6">
+                    <p:outputLabel for="fullName" value="Nombre completo:"/>
+                    <br/>
+                    <p:inputText id="fullName" value="#{customerSignUp.customer.fullName}"/>
+                </div>
+                <div class="p-col-6">
+                    <p:outputLabel for="country" value="País:"/>
+                    <br/>
+                    <p:inputText id="country" value="#{customerSignUp.customer.country}"/>
+                </div>
+                <div class="p-col-6">
+                    <p:outputLabel for="city" value="Ciudad:"/>
+                    <br/>
+                    <p:inputText id="city" value="#{customerSignUp.customer.city}"/>
+                </div>
+                <div class="p-col-6">
+                    <p:outputLabel for="postalCode" value="Código Postal:"/>
+                    <br/>
+                    <p:inputText id="postalCode" value="#{customerSignUp.customer.postalCode}"/>
+                </div>
+                <div class="p-col-6">
+                    <p:outputLabel for="address" value="Dirección:"/>
+                    <br/>
+                    <p:inputText id="address" value="#{customerSignUp.customer.address}"/>
+                </div>
+                <div class="p-col-6">
+                    <p:outputLabel for="phoneNumber" value="Teléfono:"/>
+                    <br/>
+                    <p:inputMask id="phoneNumber" value="#{customerSignUp.customer.phoneNumber}"/>
+                </div>
+            </div>
+
+            <div class="p-d-flex p-jc-between p-mt-3">
+                <p:commandButton value="Regresar" icon="pi pi-arrow-left"
+                                 action="login?faces-redirect=true"
+                                 styleClass="p-button-secondary"/>
+
+                <p:commandButton value="Continuar" icon="pi pi-arrow-right"
+                                 action="#{customerSignUp.nextStep}"
+                                 update="signUpForm messages"
+                                 process="@form"/>
+            </div>
+        </p:panel>
+
+        <p:panel id="step2Panel" rendered="#{!customerSignUp.step1}">
+            <h2>Credenciales</h2>
+            <div class="p-grid p-fluid">
+                <div class="p-col-6">
+                    <p:outputLabel for="email" value="Email:"/>
+                    <br/>
+                    <p:inputText id="email" value="#{customerSignUp.email}"/>
+                </div>
+                <div class="p-col-6">
+                    <p:outputLabel for="username" value="Nombre de Usuario:"/>
+                    <br/>
+                    <p:inputText id="username" value="#{customerSignUp.username}"/>
+                </div>
+                <div class="p-col-6">
+                    <p:outputLabel for="password" value="Contraseña:"/>
+                    <br/>
+                    <p:password id="password" value="#{customerSignUp.password}"/>
+                </div>
+                <div class="p-col-6">
+                    <p:outputLabel for="confirmPassword" value="Confirmar Contraseña:"/>
+                    <br/>
+                    <p:password id="confirmPassword" value="#{customerSignUp.confirmPassword}"/>
+                </div>
+            </div>
+
+            <div class="p-d-flex p-jc-between p-mt-3">
+                <p:commandButton value="Atrás" icon="pi pi-arrow-left"
+                                 action="#{customerSignUp.previousStep}"
+                                 update="signUpForm step1Panel step2Panel"
+                                 process="@this"
+                                 styleClass="p-button-secondary"/>
+
+                <p:commandButton value="Registrarme" icon="pi pi-user-plus"
+                                 action="#{customerSignUp.register}"
+                                 update="messages"/>
+            </div>
+        </p:panel>
+    </h:form>
+</h:body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>¡Ups! Acceso Denegado</title>
+    <h:outputStylesheet library="webjars" name="primeflex/2.0.0/primeflex.min.css"/>
+</h:head>
+
+<h:body class="p-d-flex p-jc-center p-ai-center" style="height: 100vh; margin: 0;">
+    <h:form id="errorForm">
+        <div class="p-card p-shadow-4 p-p-4 p-d-flex p-flex-column p-ai-center"
+             style="width: 90vw; max-width: 400px; text-align: center;">
+
+            <p:graphicImage value="/resources/img/common/access_denied.png"
+                            alt="access denied"
+                            style="width: 100%; max-width: 250px; height: auto; margin-bottom: 0;"/>
+
+            <p:outputLabel value="¡Ups! Acceso Denegado"
+                           style="font-size: 1.5rem; font-weight: bold; margin-top: 0;"
+                           styleClass="p-mb-2"/>
+
+            <p:outputLabel escape="false"
+                           style="font-size: 1rem;"
+                           styleClass="p-mb-3">
+                Parece que no tienes permiso para visitar esta página.
+            </p:outputLabel>
+
+            <p:commandButton value="Regresar"
+                             icon="pi pi-arrow-left"
+                             action="#{recoveryNavigator.navigateToRecoveryDestination}"
+                             styleClass="rounded-button ui-button-danger p-mb-3"
+                             style="width: 50%;"/>
+
+        </div>
+    </h:form>
+    <p:growl id="globalGrowl" showDetail="true" life="4000"/>
+</h:body>
+</html>

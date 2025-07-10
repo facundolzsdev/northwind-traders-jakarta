@@ -1,0 +1,92 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:param name="title" value="Registro Empleado"/>
+
+    <ui:define name="content">
+        <div class="p-d-flex p-jc-center p-ai-center" style="height: 60vh;">
+            <h:form id="signUpForm" class="p-card p-shadow-2 p-p-4" style="width: 600px;">
+
+                <p:panel id="step1Panel" rendered="#{employeeSignUp.step1}">
+                    <h2>Datos Personales</h2>
+                    <div class="p-grid p-fluid">
+                        <div class="p-col-6">
+                            <p:outputLabel for="fullName" value="Nombre completo:"/>
+                            <br/>
+                            <p:inputText id="fullName" value="#{employeeSignUp.employee.fullName}"/>
+                        </div>
+                        <div class="p-col-6">
+                            <p:outputLabel for="dni" value="D.N.I:"/>
+                            <br/>
+                            <p:inputText id="dni" value="#{employeeSignUp.employee.dni}"/>
+                        </div>
+                        <div class="p-col-6">
+                            <p:outputLabel for="birthDate" value="Fecha de Nacimiento:"/>
+                            <p:datePicker id="birthDate" value="#{employeeSignUp.employee.birthDate}"
+                                          showIcon="true" pattern="dd/MM/yyyy" yearNavigator="true"/>
+                        </div>
+                        <div class="p-col-6">
+                            <p:outputLabel for="phoneNumber" value="Teléfono:"/>
+                            <br/>
+                            <p:inputMask id="phoneNumber" value="#{employeeSignUp.employee.phoneNumber}"/>
+                        </div>
+                    </div>
+
+                    <div class="p-d-flex p-jc-between p-mt-3">
+                        <p:commandButton value="Regresar" icon="pi pi-arrow-left"
+                                         action="dashboard?faces-redirect=true"
+                                         styleClass="p-button-secondary"/>
+
+                        <p:commandButton value="Continuar" icon="pi pi-arrow-right"
+                                         action="#{employeeSignUp.nextStep}"
+                                         update="signUpForm globalGrowl"
+                                         process="@form"/>
+                    </div>
+                </p:panel>
+
+                <p:panel id="step2Panel" rendered="#{!employeeSignUp.step1}">
+                    <h2>Credenciales</h2>
+                    <div class="p-grid p-fluid">
+                        <div class="p-col-6">
+                            <p:outputLabel for="email" value="Email:"/>
+                            <br/>
+                            <p:inputText id="email" value="#{employeeSignUp.email}"/>
+                        </div>
+                        <div class="p-col-6">
+                            <p:outputLabel for="username" value="Nombre de Usuario:"/>
+                            <br/>
+                            <p:inputText id="username" value="#{employeeSignUp.username}"/>
+                        </div>
+                        <div class="p-col-6">
+                            <p:outputLabel for="password" value="Contraseña:"/>
+                            <br/>
+                            <p:password id="password" value="#{employeeSignUp.password}"/>
+                        </div>
+                        <div class="p-col-6">
+                            <p:outputLabel for="confirmPassword" value="Confirmar Contraseña:"/>
+                            <br/>
+                            <p:password id="confirmPassword" value="#{employeeSignUp.confirmPassword}"/>
+                        </div>
+                    </div>
+
+                    <div class="p-d-flex p-jc-between p-mt-3">
+                        <p:commandButton value="Atrás" icon="pi pi-arrow-left"
+                                         action="#{employeeSignUp.previousStep}"
+                                         update="signUpForm step1Panel step2Panel"
+                                         process="@this"
+                                         styleClass="p-button-secondary"/>
+
+                        <p:commandButton value="Registrar" icon="pi pi-user-plus"
+                                         action="#{employeeSignUp.register}"
+                                         update="globalGrowl"/>
+                    </div>
+                </p:panel>
+            </h:form>
+        </div>
+
+    </ui:define>
+</ui:composition>
+

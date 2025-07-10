@@ -1,0 +1,98 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:param name="title" value="Dashboard"/>
+
+    <ui:define name="content">
+        <div class="ui-g ui-fluid" style="margin-top: 2rem;">
+            <div class="ui-g-12 ui-g-nopad">
+                <div class="ui-g-6 ui-g-offset-3">
+                    <p:card styleClass="shadow-2">
+                        <f:facet name="header">
+                            <h:outputText value="Registrar Empleados" style="font-weight: bold; font-size: 1.2rem;"/>
+                        </f:facet>
+
+                        <h:panelGrid columns="2" columnClasses="ui-g-6,ui-g-6" style="width:100%;">
+                            <h:graphicImage library="img" name="admin/emp_hand.png" style="width: 64px;"/>
+                            <h:outputText value="Registrar nuevos empleados en el sistema."
+                                          style="font-size: 1.1rem;"/>
+                        </h:panelGrid>
+                        <br/>
+                        <div style="text-align: center;">
+                            <p:button value="Ir al registro" outcome="employee-signup" icon="pi pi-user-plus"
+                                      styleClass="ui-button-raised" style="width: auto;"/>
+                        </div>
+                    </p:card>
+                </div>
+            </div>
+
+            <div class="ui-g-12 ui-g-nopad">
+                <div class="ui-g-6 ui-g-offset-3">
+                    <p:card styleClass="shadow-2">
+                        <f:facet name="header">
+                            <h:outputText value="Registrar Admins" style="font-weight: bold; font-size: 1.2rem;"/>
+                        </f:facet>
+
+                        <h:panelGrid columns="2" columnClasses="ui-g-6,ui-g-6" style="width:100%;">
+                            <h:graphicImage library="img" name="admin/admin_wheel.png" style="width: 64px;"/>
+                            <h:outputText value="Registrar nuevos administradores en el sistema."
+                                          style="font-size: 1.1rem;"/>
+                        </h:panelGrid>
+                        <br/>
+                        <div style="text-align: center;">
+                            <p:button value="Ir al registro" outcome="admin-signup" icon="pi pi-user-plus"
+                                      styleClass="ui-button-raised" style="width: auto;"/>
+                        </div>
+                    </p:card>
+                </div>
+            </div>
+
+            <div class="ui-g-12 ui-g-nopad">
+                <div class="ui-g-6 ui-g-offset-3">
+                    <p:card styleClass="shadow-2">
+                        <f:facet name="header">
+                            <h:outputText value="Reportes de Ventas" style="font-weight: bold; font-size: 1.2rem;"/>
+                        </f:facet>
+
+                        <h:panelGrid columns="2" columnClasses="ui-g-6,ui-g-6" style="width:100%;">
+                            <h:graphicImage library="img" name="admin/reports_hand.png" style="width: 64px;"/>
+                            <h:outputText value="Consulta informes de ventas y desempeño del sistema."
+                                          style="font-size: 1.1rem;"/>
+                        </h:panelGrid>
+                        <br/>
+                        <div style="text-align: center;">
+                            <p:button value="Ver reportes" outcome="reports" icon="pi pi-chart-line"
+                                      styleClass="ui-button-raised" style="width: auto;"/>
+                        </div>
+                    </p:card>
+                </div>
+            </div>
+
+            <div class="ui-g-12 ui-g-nopad">
+                <div class="ui-g-6 ui-g-offset-3">
+                    <p:card styleClass="shadow-2">
+                        <f:facet name="header">
+                            <h:outputText value="Listado de Personal" style="font-weight: bold; font-size: 1.2rem;"/>
+                        </f:facet>
+
+                        <h:panelGrid columns="2" columnClasses="ui-g-6,ui-g-6" style="width:100%;">
+                            <h:graphicImage library="img" name="admin/list.png" style="width: 64px;"/>
+                            <h:outputText value="Consulta la lista de empleados con sus detalles personales."
+                                          style="font-size: 1.1rem;"/>
+                        </h:panelGrid>
+                        <br/>
+                        <div style="text-align: center;">
+                            <p:button value="Ver listado" outcome="manage-employees" icon="pi pi-arrow-right"
+                                      styleClass="ui-button-raised" style="width: auto;"/>
+                        </div>
+                    </p:card>
+                </div>
+            </div>
+        </div>
+
+    </ui:define>
+</ui:composition>

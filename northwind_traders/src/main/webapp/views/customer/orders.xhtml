@@ -1,0 +1,131 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:param name="title" value="Mis Pedidos"/>
+
+    <ui:define name="content">
+        <h:form id="ordersForm">
+            <h:panelGroup rendered="#{ordersBean.isOrdersEmpty()}" style="text-align: center;">
+                <h:outputText value="Aún no tienes pedidos en tu historial."
+                              style="font-weight: bold; font-size: 1.1em;"/>
+                <br/>
+                <p:commandButton value="Ver Catálogo"
+                                 action="products.jsf"
+                                 ajax="false"
+                                 style="margin-top: 10px;"/>
+            </h:panelGroup>
+
+            <p:dataTable id="ordersTable" value="#{ordersBean.orders}" var="order" paginator="true" rows="10"
+                         emptyMessage="No tienes pedidos aún." reflow="true"
+                         rendered="#{not ordersBean.isOrdersEmpty()}">
+
+                <p:column headerText="N°. Pedido">
+                    <h:outputText value="#{order.id}"/>
+                </p:column>
+
+                <p:column headerText="Estado">
+                    <p:badge value="#{order.status.label}"
+                             severity="#{ordersBean.getStatusSeverity(order.status)}"/>
+                </p:column>
+
+                <p:column headerText="Fecha">
+                    <h:outputText value="#{order.orderDate}" converter="dateTimeConverter"/>
+                </p:column>
+
+                <p:column headerText="Opciones" style="text-align: center;">
+                    <p:commandButton icon="pi pi-search"
+                                     actionListener="#{ordersBean.loadOrderDetailsById(order.id)}"
+                                     update="detailsDialog"
+                                     oncomplete="PF('detailsDialog').show()"/>
+
+                    <p:commandButton icon="pi pi-times"
+                                     style="margin-left: 5px; background-color: red; color: white;"
+                                     action="#{ordersBean.prepareCancelOrder(order)}"
+                                     oncomplete="PF('cancelDialog').show()"
+                                     update="cancelDialog"
+                                     disabled="#{order.status ne 'PENDIENTE'}">
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>
+
+            <h:panelGroup style="margin-top: 10px; display: flex; align-items: center; justify-content: space-between;"
+                          rendered="#{not ordersBean.isOrdersEmpty()}">
+                <h:panelGroup layout="block" style="display: flex; gap: 10px;">
+                    <p:commandButton value="Regresar"
+                                     action="products.jsf"
+                                     ajax="false"/>
+
+                    <p:commandButton value="Limpiar historial"
+                                     styleClass="ui-button-danger"
+                                     onclick="PF('clearHistoryDialog').show();"/>
+                </h:panelGroup>
+            </h:panelGroup>
+
+        </h:form>
+
+        <p:dialog id="detailsDialog" widgetVar="detailsDialog" header="Detalles del Pedido"
+                  modal="true" responsive="true" width="50%">
+
+            <h:panelGroup layout="block" style="max-height: 70vh; overflow-y: auto; padding-right: 10px;">
+                <h:panelGroup id="orderDetailsPanel">
+                    <p:panelGrid columns="2" rendered="#{not empty ordersBean.selectedOrder}">
+                        <h:outputText value="Total Pagado:" style="font-weight: bold;"/>
+                        <h:outputText value="$#{ordersBean.selectedOrder.totalAmount}" style="font-weight: bold;"/>
+                    </p:panelGrid>
+
+                    <p:dataTable value="#{ordersBean.selectedOrder.orderDetails}" var="detail"
+                                 style="margin-top: 10px;"
+                                 rendered="#{not empty ordersBean.selectedOrder and not empty ordersBean.selectedOrder.orderDetails}">
+                        <p:column headerText="Producto">
+                            <h:outputText value="#{detail.product.name}"/>
+                        </p:column>
+                        <p:column headerText="Cantidad">
+                            <h:outputText value="#{detail.productQuantity}"/>
+                        </p:column>
+                        <p:column headerText="Precio Unitario">
+                            <h:outputText value="$#{detail.productPrice}"/>
+                        </p:column>
+                        <p:column headerText="Subtotal">
+                            <h:outputText value="$#{detail.productQuantity * detail.productPrice}"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+            </h:panelGroup>
+            <p:commandButton value="Cerrar" onclick="PF('detailsDialog').hide()" style="margin-top: 10px;"/>
+        </p:dialog>
+
+        <p:dialog id="cancelDialog" widgetVar="cancelDialog"
+                  header="Cancelar Pedido n°#{ordersBean.selectedOrder.id}" modal="true" width="30%">
+            <h:outputText value="¿Deseas cancelar este pedido?" style="font-weight: bold;"/>
+            <br/><br/>
+            <h:panelGroup>
+                <p:commandButton value="Confirmar"
+                                 action="#{ordersBean.cancelOrder(ordersBean.selectedOrder)}"
+                                 oncomplete="PF('cancelDialog').hide()"
+                                 update="ordersForm globalGrowl"
+                                 styleClass="ui-button-danger"/>
+                <p:commandButton value="Cancelar" onclick="PF('cancelDialog').hide()" styleClass="ui-button-secondary"
+                                 style="margin-left: 10px;"/>
+            </h:panelGroup>
+        </p:dialog>
+
+        <p:dialog id="clearHistoryDialog" widgetVar="clearHistoryDialog" header="Vaciar Historial" modal="true"
+                  width="30%">
+            <h:outputText value="Se eliminarán de forma permanente tus órdenes procesadas" style="font-weight: bold;"/>
+            <br/><br/>
+            <h:panelGroup>
+                <p:commandButton value="Confirmar"
+                                 action="#{ordersBean.clearOrderHistory}" update="ordersForm globalGrowl"
+                                 oncomplete="PF('clearHistoryDialog').hide();"
+                                 styleClass="ui-button-danger"/>
+                <p:commandButton value="Cancelar" onclick="PF('clearHistoryDialog').hide();"
+                                 styleClass="ui-button-secondary" style="margin-left: 10px;"/>
+            </h:panelGroup>
+        </p:dialog>
+
+    </ui:define>
+</ui:composition>

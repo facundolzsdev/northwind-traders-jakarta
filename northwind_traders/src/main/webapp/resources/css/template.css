@@ -1,0 +1,40 @@
+body, html {
+    margin: 0;
+    padding: 0;
+}
+
+h\:form {
+    margin: 0;
+    padding: 0;
+}
+
+.menubar-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0;
+    padding: 15px 0 15px 0;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+    box-sizing: border-box;
+}
+
+.layout-body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.layout-body > .p-fluid {
+    flex: 1;
+}
+
+footer {
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
