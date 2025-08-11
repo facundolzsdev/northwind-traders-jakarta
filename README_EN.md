@@ -13,13 +13,9 @@ This repository contains the source code and documentation for the **Northwind T
 - `northwind_traders/`  
   Project source code, technical documentation, and configuration files.
 
-## About Project Execution
-
-This project requires configuration of WildFly and a MySQL database. Since manual deployment can be complex, demonstration videos will be shared soon to facilitate evaluation.
-
 ---
 
 If you have any questions or need further information, feel free to contact me.
 
 - To view the Spanish version, visit [README_ES.md]  
-- Para ver la versión en español, visit [README_ES.md]
+- Para ver la versión en español, visite [README_ES.md]
