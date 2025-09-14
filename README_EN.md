@@ -15,6 +15,10 @@ This repository contains the source code and documentation for the **Northwind T
 
 ---
 
+🔗 [Watch the YouTube playlist](https://youtube.com/playlist?list=PLo6gJIiicJy_CTeun0VCVttNv1B8mRzYC&si=tOlpt0eCm3cFriel)
+
+---
+
 If you have any questions or need further information, feel free to contact me.
 
 - To view the Spanish version, visit [README_ES.md]  

@@ -16,6 +16,10 @@ Este repositorio contiene el código fuente y la documentación del proyecto **N
 
 ---
 
+🔗 [Ver la playlist en YouTube](https://youtube.com/playlist?list=PLo6gJIiicJy_CTeun0VCVttNv1B8mRzYC&si=tOlpt0eCm3cFriel)
+
+---
+
 Cualquier duda o consulta, pueden contactarme.
 
 - Para ver la versión en inglés, visite [README_EN.md]  

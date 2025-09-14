@@ -193,6 +193,14 @@ access.
 
 ---
 
+## 🎞️ YouTube Playlist
+
+Video series that provides a detailed explanation of how the system works.
+
+🔗 [Watch the YouTube playlist](https://youtube.com/playlist?list=PLo6gJIiicJy_CTeun0VCVttNv1B8mRzYC&si=tOlpt0eCm3cFriel)
+
+---
+
 ## 🧠 A Personal Consideration
 
 While this project utilizes an adapted version of the Northwind database (originally from Microsoft), it's important to

@@ -200,6 +200,14 @@ accesos no autorizados o confusos.
 
 ---
 
+## 🎞️ Playlist en YouTube
+
+Serie de videos explicando detalladamente el funcionamiento del sistema.
+
+🔗 [Ver la playlist en YouTube](https://youtube.com/playlist?list=PLo6gJIiicJy_CTeun0VCVttNv1B8mRzYC&si=tOlpt0eCm3cFriel)
+
+---
+
 ## 🧠 Una Consideración Personal
 
 Si bien el proyecto utiliza una versión adaptada de la base de datos Northwind (original de Microsoft), es importante
